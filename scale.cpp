@@ -1,5 +1,11 @@
-// Name: Numaan Qureshi
-// Email : numaan.qureshi58@myhunter.cuny.edu
+/*
+  Author:   <---  Write your name here
+
+  Description:
+    The program reads a PGM image from the file "inImage.pgm",
+    and outputs a modified image to "outImage.pgm"
+*/
+
 
 #include <iostream>
 #include <cassert>
@@ -49,7 +55,7 @@ void readImage(int image[MAX_H][MAX_W], int &height, int &width) {
 
 // Writes a PGM file
 // Need to provide the array data and the image dimensions
-void writeImage(int image[MAX_H][MAX_W], int height, int width) {
+void writeImage(int image[2 * MAX_H][2 * MAX_W], int height, int width) {
 	ofstream ostr;
 	ostr.open("outImage.pgm");
 	if (ostr.fail()) {
@@ -76,10 +82,21 @@ void writeImage(int image[MAX_H][MAX_W], int height, int width) {
 	return;
 }
 
+void scale2x2(int img[MAX_H][MAX_W], int out[2 * MAX_H][2 * MAX_W], int row, int col)
+{
+    for (int i = 2*row; i < 2*row + 2; i++)
+    {
+        for (int j = 2*col; j < 2*col + 2; j++)
+        {
+            out[i][j] = img[row][col];
+        }
+    }
+}
+
 int main() {
 
 	int img[MAX_H][MAX_W];
-	int h, w;
+	int h, w;   
 
 	readImage(img, h, w); // read it from the file "inImage.pgm"
 	// h and w were passed by reference and
@@ -88,18 +105,15 @@ int main() {
 
 	// Now we can manipulate the image the way we like
 	// for example we copy its contents into a new array
-	int out[MAX_H][MAX_W];
+	int out[2 * MAX_H][2 * MAX_W];
 
 	for(int row = 0; row < h; row++) {
 		for(int col = 0; col < w; col++) {
-			if ((row >= h/4) && (row <= (3 * h) / 4) && (col >= w/4) && (col <= (3 * w) / 4))
-            	out[row][col] = 255; 
-			else
-				out[row][col] = img[row][col];
+			scale2x2(img, out, row, col);
 		}
 	}
 
 	// and save this new image to file "outImage.pgm"
-	writeImage(out, h, w);
+	writeImage(out, 2*h, 2*w);
 
 }

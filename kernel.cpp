@@ -1,10 +1,17 @@
-// Name: Numaan Qureshi
-// Email : numaan.qureshi58@myhunter.cuny.edu
+/*
+  Author:   <---  Write your name here
+
+  Description:
+    The program reads a PGM image from the file "inImage.pgm",
+    and outputs a modified image to "outImage.pgm"
+*/
+
 
 #include <iostream>
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
+#include <cstring>
 
 using namespace std;
 
@@ -90,14 +97,36 @@ int main() {
 	// for example we copy its contents into a new array
 	int out[MAX_H][MAX_W];
 
+    int temp[MAX_H+2][MAX_W+2];
+    memset(temp,0,sizeof(temp));
+
 	for(int row = 0; row < h; row++) {
 		for(int col = 0; col < w; col++) {
-			if ((row >= h/4) && (row <= (3 * h) / 4) && (col >= w/4) && (col <= (3 * w) / 4))
-            	out[row][col] = 255; 
-			else
-				out[row][col] = img[row][col];
+			temp[row+1][col+1] = img[row][col];
 		}
 	}
+    int a, b, c, d, e, f, g, p, i;
+    int function;
+    for (int row = 1; row < h + 1; row++ )
+    {
+        for (int col = 1; col < w + 1; col++)
+        {
+            a = temp[row-1][col-1];
+            b = temp[row-1][col];
+            c = temp[row-1][col+1];
+            g = temp[row+1][col-1];
+            p = temp[row+1][col];
+            i = temp[row+1][col+1];
+
+            function = (g + 2*p + i)-(a + 2*b + c);
+            if (function < 0) 
+                function = 0;
+            if(function > 255) 
+                function = 255;
+
+            out[row-1][col-1] = function;
+        }
+    }
 
 	// and save this new image to file "outImage.pgm"
 	writeImage(out, h, w);

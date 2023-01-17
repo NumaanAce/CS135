@@ -1,5 +1,11 @@
-// Name: Numaan Qureshi
-// Email : numaan.qureshi58@myhunter.cuny.edu
+/*
+  Author:   <---  Write your name here
+
+  Description:
+    The program reads a PGM image from the file "inImage.pgm",
+    and outputs a modified image to "outImage.pgm"
+*/
+
 
 #include <iostream>
 #include <cassert>
@@ -92,10 +98,7 @@ int main() {
 
 	for(int row = 0; row < h; row++) {
 		for(int col = 0; col < w; col++) {
-			if ((row >= h/4) && (row <= (3 * h) / 4) && (col >= w/4) && (col <= (3 * w) / 4))
-            	out[row][col] = 255; 
-			else
-				out[row][col] = img[row][col];
+			out[row][col] = img[row][col];
 		}
 	}
 

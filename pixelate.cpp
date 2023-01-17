@@ -1,5 +1,11 @@
-// Name: Numaan Qureshi
-// Email : numaan.qureshi58@myhunter.cuny.edu
+/*
+  Author: Numaan Qureshi
+
+  Description:
+    The program reads a PGM image from the file "inImage.pgm",
+    and outputs a modified image to "outImage.pgm"
+*/
+
 
 #include <iostream>
 #include <cassert>
@@ -76,6 +82,24 @@ void writeImage(int image[MAX_H][MAX_W], int height, int width) {
 	return;
 }
 
+void pixelate2x2(int img[MAX_H][MAX_W], int out[MAX_H][MAX_W], int row, int col)
+{
+	int avg = 0;
+	for(int i = row; i < row + 2; i++) {
+		for(int j = col; j < col + 2; j++) {
+			avg += img[i][j];
+		}
+	}
+	
+	avg = avg/4;
+
+	for(int i = row; i < row + 2; i++) {
+		for(int j = col; j < col + 2; j++) {
+			out[i][j] = avg;
+		}
+	}
+}
+
 int main() {
 
 	int img[MAX_H][MAX_W];
@@ -90,12 +114,9 @@ int main() {
 	// for example we copy its contents into a new array
 	int out[MAX_H][MAX_W];
 
-	for(int row = 0; row < h; row++) {
-		for(int col = 0; col < w; col++) {
-			if ((row >= h/4) && (row <= (3 * h) / 4) && (col >= w/4) && (col <= (3 * w) / 4))
-            	out[row][col] = 255; 
-			else
-				out[row][col] = img[row][col];
+	for(int row = 0; row < h; row+=2) {
+		for(int col = 0; col < w; col+=2) {
+			pixelate2x2(img, out, row, col);
 		}
 	}
 
